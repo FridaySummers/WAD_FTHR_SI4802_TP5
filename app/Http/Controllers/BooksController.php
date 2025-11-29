@@ -16,6 +16,7 @@ class BooksController extends Controller
      */
     public function index()
     {
+        return BookResource::collection(Book::all());
     }
 
     /**
@@ -24,7 +25,23 @@ class BooksController extends Controller
      */
     public function store(Request $request)
     {
+        $valid = Validator::make($request->all(), [
+            'title' => 'required|string',
+            'author' => 'required|string',
+            'published_year' => 'required|digits:4'
+        ]);
 
+        if ($valid->fails()) {
+            return response()->json($valid->errors(), 422);
+        }
+
+        $book = Book::create([
+            'title' => $request->title,
+            'author' => $request->author,
+            'published_year' => $request->published_year
+        ]);
+
+        return new BookResource($book);
     }
 
     /**
@@ -33,7 +50,13 @@ class BooksController extends Controller
      */
     public function show(string $id)
     {
+        $book = Book::find($id);
 
+        if (!$book) {
+            return response()->json(['message' => 'Data not found'], 404);
+        }
+
+        return new BookResource($book);
     }
 
     /**
@@ -42,7 +65,25 @@ class BooksController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $book = Book::find($id);
 
+        if (!$book) {
+            return response()->json(['message' => 'Data not found'], 404);
+        }
+
+        $valid = Validator::make($request->all(), [
+            'title' => 'sometimes|string',
+            'author' => 'sometimes|string',
+            'published_year' => 'sometimes|digits:4'
+        ]);
+
+        if ($valid->fails()) {
+            return response()->json($valid->errors(), 422);
+        }
+
+        $book->update($request->all());
+
+        return new BookResource($book);
     }
 
     /**
@@ -51,6 +92,15 @@ class BooksController extends Controller
      */
     public function destroy(string $id)
     {
+        $book = Book::find($id);
+
+        if (!$book) {
+            return response()->json(['message' => 'Data not found'], 404);
+        }
+
+        $book->delete();
+
+        return response()->json(['message' => 'Data successfully deleted']);
     }
 
     /**
@@ -59,6 +109,15 @@ class BooksController extends Controller
      */
     public function borrowReturn(string $id)
     {
+        $book = Book::find($id);
 
+        if (!$book) {
+            return response()->json(['message' => 'Data not found'], 404);
+        }
+
+        $book->is_available = !$book->is_available;
+        $book->save();
+
+        return new BookResource($book);
     }
 }
