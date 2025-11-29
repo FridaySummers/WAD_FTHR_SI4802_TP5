@@ -9,8 +9,8 @@ use App\Http\Controllers\CategoriesController;
  * ==========1===========
  * unprotected routes for user registration and login
  */
-Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
 /**
  * =========2===========
