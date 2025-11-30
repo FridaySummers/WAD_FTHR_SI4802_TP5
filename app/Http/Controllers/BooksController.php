@@ -16,6 +16,8 @@ class BooksController extends Controller
      */
     public function index()
     {
+        $books = Book::all();
+        return response()-> json(['data'=> $books]);
     }
 
     /**
@@ -24,7 +26,17 @@ class BooksController extends Controller
      */
     public function store(Request $request)
     {
+        $book = Book::create([
+            'title'=> $request-> title, 
+            'author'=> $request-> author, 
+            'published_year'=> $request-> published_year, 
+            'is_available'=> $request-> is_available??true, 
 
+        ]);
+        return response()-> json([
+            'message'=> 'buku berhasil ditambahkan',
+            'data'=> $book, 
+        ], 201);
     }
 
     /**
@@ -33,7 +45,9 @@ class BooksController extends Controller
      */
     public function show(string $id)
     {
-
+        $book = Book::find($id);
+        if (!$book) return response()-> json(['message'=> 'buku tidak ditemukan !'],404);
+        return response()-> json(['data'=> $book]);
     }
 
     /**
@@ -42,7 +56,13 @@ class BooksController extends Controller
      */
     public function update(Request $request, string $id)
     {
-
+        $book = Book::find($id);
+        if (!$book) return response()-> json(['massage'=> 'buku tidak ditemukan !'],404);
+        $book-> update($request->all());
+        return response()-> json([
+            'massage'=> 'buku berhasil diedit',
+            'data'=> $book, 
+        ], 200);
     }
 
     /**
@@ -51,6 +71,12 @@ class BooksController extends Controller
      */
     public function destroy(string $id)
     {
+        $book = Book::find($id);
+        if (!$book) return response()-> json(['massage'=> 'buku tidak ditemukan'],404);
+        $book-> delete();
+        return response()-> json([
+            'massage'=> 'buku berhasil dihapus',    
+        ], 200);
     }
 
     /**
@@ -59,6 +85,15 @@ class BooksController extends Controller
      */
     public function borrowReturn(string $id)
     {
+        $book = Book::findOrFail($id);
+        $book->update(['is_available' => !$book->is_available]);
 
+        return (new BookResource($book))
+            ->additional([
+                'message' => 'Book availability status changed successfully'
+            ])
+            ->response()
+            ->setStatusCode(200);
     }
 }
+    
