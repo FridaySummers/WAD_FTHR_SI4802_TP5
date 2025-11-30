@@ -1,72 +1,97 @@
-# PERATURAN PENGERJAAN DAN PENGUMPULAN TUGAS  
-## PRAKTIKUM WAD
+# Tutorial Singkat Pengerjaan TP Menggunakan Branch
 
-### A. Ketentuan Umum
-1. Setiap peserta praktikum **wajib mengerjakan Tugas Pendahuluan (TP)** terlebih dahulu sebelum mengikuti praktikum.  
-   Jika belum mengerjakan, maka peserta diminta menyelesaikan TP terlebih dahulu.
-
-2. Studi kasus dikerjakan **secara individu**.
-
-3. Jawaban **tidak boleh sama** antar individu.
-
-4. Hasil pengerjaan wajib di-*push* ke repository GitHub masing-masing.
-
-5. Wajib melakukan **screenshot seluruh pengerjaan dan output** dalam bentuk *full screen* serta menampilkan **tanggal dan waktu**.
+Semua peserta wajib mengerjakan Tugas Pendahuluan di **branch masing-masing**, bukan di branch `main`.
 
 ---
 
-### B. Format Pengumpulan Hasil Pengerjaan
-
-#### 1. Format Nama Branch 
-> **PASTIKAN PUSH DI BRANCH MASING-MASING**
-
-NAMAPENDEK
-
-
+## Format Nama Branch
+```
+namapendek
+```
 Contoh:
-
-SAHAL
-
-
----
-
-#### 3. Format Pesan Commit  
-Pesan commit harus mengikuti format seperti yang telah dicontohkan oleh asisten (sesuai pada gambar yang diberikan saat praktikum).
+```
+sahal
+```
 
 ---
 
-#### 4. Format Nama File PDF
+## Melalui Terminal (Git / VS Code)
 
-**File PDF Tugas Pendahuluan (TP):**
+### 1. Update branch `main`
+```bash
+git checkout main
+git pull origin main
+```
 
-WAD_KODEASISTEN_NAMAPENDEK_NIM_TPX
-
+### 2. Buat branch baru
+```bash
+git checkout -b namapendek
+```
 Contoh:
-
-WAD_HALF_SAHAL_1202220123_TP1
-
-
-**File PDF Jurnal:**
-
-WAD_KODEASISTEN_NAMAPENDEK_NIM_JURNALX
-
-Contoh:
-
-WAD_HALF_SAHAL_1202220123_JURNAL1
+```bash
+git checkout -b sahal
+```
 
 
----
-
-### C. Ketentuan Tambahan
-
-1. Peserta diperbolehkan mencari informasi melalui **Google**, namun **dilarang menggunakan AI**.
-2. Peserta **dilarang menggunakan segala bentuk extension AI di Visual Studio Code**.  
-   Jika ketahuan menggunakan, maka **nilai akhir modul akan menjadi 0**.
-3. Kesalahan penamaan file akan dikenai **potongan nilai sebesar 10%**.
-4. Keterlambatan pengumpulan akan dikenai **potongan nilai sebesar 20%**.
-5. Jika terdapat kendala pada perangkat praktikum, segera hubungi asisten praktikum yang bertugas.
-6. Segala bentuk **kecurangan dan plagiarisme** akan diproses ke komisi disiplin dan menyebabkan **nilai akhir modul menjadi 0**.
+### 3. Commit & Push
+```bash
+git add .
+git commit -m "DONE BANGGGGG"
+git push -u origin namapendek
+```
 
 ---
 
-> **Perhatikan seluruh aturan dengan seksama untuk menghindari pengurangan nilai.**
+### 4. Buat Pull Request
+1. Buka repository di GitHub.
+2. Klik tombol **Compare & pull request**.
+3. Kirim Pull Request ke branch `main`.
+
+---
+
+## Melalui GitHub Desktop
+
+### 1. Buat Branch
+1. Buka GitHub Desktop  
+2. Klik **Current Branch** → **New Branch**  
+3. Isi nama branch:
+   ```
+   namapendek
+   ```
+4. Klik **Create Branch**
+
+---
+
+
+### 3. Commit & Push
+1. Isi commit message:
+   ```
+   DONE BANGGG (contoh)
+   ```
+2. Klik **Commit**
+3. Klik **Push origin**
+
+---
+
+### 4. Buat Pull Request
+1. Klik tombol **Create Pull Request**
+2. Isi judul:
+   ```
+   TP5 - NAMAPENDEK
+   ```
+3. Kirim ke branch `main`
+
+---
+
+## Checklist Sebelum Submit
+
+✅ Tidak mengerjakan di branch `main`  
+✅ Nama branch sesuai format  
+✅ Nama folder sesuai format  
+✅ Sudah commit  
+✅ Sudah push  
+✅ Sudah membuat Pull Request  
+
+---
+
+KALO BINGUNG, TANYA (pelis) :D
