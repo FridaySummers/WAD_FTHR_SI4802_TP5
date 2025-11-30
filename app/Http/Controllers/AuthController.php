@@ -17,6 +17,29 @@ class AuthController extends Controller
          * ==========1===========
          * Validasi data registrasi yang masuk
          */
+        $validator = Validator::make($request->all(), [
+        'name' => 'required',
+        'email' => 'required|email|unique:users',
+        'password' => 'required',
+        ]);
+
+        if ($validator->fails()) return response()->json($validator->errors(), 422);
+
+        $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        ]);
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+        'message' => 'Registration successful',
+        'data' => [
+            'user' => $user,
+            'token' => $token
+        ]
+    ], 200);
 
 
         /**
@@ -40,6 +63,20 @@ class AuthController extends Controller
          * =========4===========
          * Validasi data login yang masuk
          */
+        if (!Auth::attempt($request->only('email', 'password'))) {
+        return response()->json(['message' => 'Unauthorized'], 401);
+    }
+
+    $user = User::where('email', $request['email'])->firstOrFail();
+    $token = $user->createToken('auth_token')->plainTextToken;
+
+    return response()->json([
+        'message' => 'Login successful',
+        'data' => [
+            'user' => $user,
+            'token' => $token
+        ]
+    ], 200);
 
         /**
          * =========5===========
@@ -60,7 +97,8 @@ class AuthController extends Controller
          * =========7===========
          * Invalidate token yang digunakan untuk autentikasi request saat ini
          */
-
+        Auth::user()->currentAccessToken()->delete();
+        return response()->json(['message' => 'Successfully logged out']);
 
         /**
          * =========8===========
